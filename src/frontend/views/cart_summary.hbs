@@ -1,0 +1,77 @@
+<div class="py-5 text-center">
+<h2>Checkout Summary</h2>
+</div>
+
+<div class="row">
+<div class="col-md-4 order-md-2 mb-4">
+  <h4 class="d-flex justify-content-between align-items-center mb-3">
+    <span class="text-muted">Your cart</span>
+    <span class="badge badge-secondary badge-pill">{{cart_length}}</span>
+  </h4>
+  <ul class="list-group mb-3">
+    {{#each cart_products}}
+    <li class="list-group-item d-flex justify-content-between lh-condensed">
+      <div>
+        <h6 class="my-0">{{name}}</h6>
+        <small class="text-muted">{{description}}</small>
+      </div>
+      <span class="text-muted">${{offer.price}}</span>
+    </li>
+    {{/each}}
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total (USD)</span>
+      <strong>${{cart_value}}</strong>
+    </li>
+  </ul>
+</div>
+<div class="col-md-8 order-md-1">
+  <h4 class="mb-3">Billing address</h4>
+  <form class="needs-validation" method="POST" action="/cart/order" novalidate>
+      <div class="mb-3">
+        <label for="firstName">Name</label>
+        <input type="text" readonly class="form-control" id="name" placeholder="" value="{{order.name}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="email">Email</label>
+        <input type="text" readonly class="form-control" id="email" placeholder="Email" value="{{order.email}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="address">Address</label>
+      <input type="text" readonly class="form-control" id="address" value="{{order.address}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="address2">Address 2</label>
+      <input type="text" readonly class="form-control" id="address2" value="{{order.address2}}">
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 mb-3">
+        <label for="country">Country</label>
+        <input type="text" readonly class="form-control" id="country" value="{{order.country}}">
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="state">State</label>
+        <input type="text" readonly class="form-control" id="state" value="{{order.state}}">
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="zip">Zip</label>
+        <input type="text" readonly class="form-control" id="zip" value="{{order.zip}}">
+      </div>
+      <div class="col-md-3 mb-3">
+          <label for="city">City</label>
+          <input type="text" readonly class="form-control" name="city" id="city" value="{{order.city}}">
+        </div>
+    </div>
+    <hr class="mb-4">
+
+    <h4 class="mb-3">Payment</h4>
+    <div class="d-block my-3">
+        <label>{{order.paymentMethod}}</label>
+      </div>
+    <hr class="mb-4">
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Buy now!</button>
+  </form>
+</div>

@@ -1,0 +1,136 @@
+#
+# Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify,
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: xray-daemon
+  name: xray-daemon
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: xray-daemon
+  namespace: kube-system
+  labels:
+    app: xray-daemon
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: xray-daemon
+  namespace: default
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: xray-daemon
+  namespace: kube-system
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: xray-daemon
+    spec:
+      volumes:
+      - name: config-volume
+        configMap:
+          name: "xray-config"
+      hostNetwork: true
+      containers:
+      - name: xray-daemon
+        image: ckassen/xray-daemon:latest
+        command: [ "/usr/bin/xray", "-c", "/aws/xray/config.yaml" ]
+        resources:
+          limits:
+            memory: 64Mi
+            cpu: 500m
+          requests:
+            memory: 36Mi
+            cpu: 200m
+        ports:
+        - name: xray-ingest
+          containerPort: 2000
+          hostPort: 2000
+          protocol: UDP
+        volumeMounts:
+        - name: config-volume
+          mountPath: /aws/xray
+          readOnly: true
+---
+# Configuration for AWS X-Ray daemon
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xray-config
+  namespace: kube-system
+data:
+  config.yaml: |-
+    # Maximum buffer size in MB (minimum 3). Choose 0 to use 1% of host memory.
+    TotalBufferSizeMB: 8
+    # Maximum number of concurrent calls to AWS X-Ray to upload segment documents.
+    Concurrency: 8
+    # Send segments to AWS X-Ray service in a specific region
+    Region: ""
+    # Change the X-Ray service endpoint to which the daemon sends segment documents.
+    Endpoint: ""
+    Socket:
+      # Change the address and port on which the daemon listens for UDP packets containing segment documents.
+      UDPAddress: "0.0.0.0:2000"
+      # Change the address and port on which the daemon listens for HTTP requests to proxy to AWS X-Ray.
+      TCPAddress: "0.0.0.0:2000"
+    Logging:
+      LogRotation: true
+      # Change the log level, from most verbose to least: dev, debug, info, warn, error, prod (default).
+      LogLevel: "prod"
+      # Output logs to the specified file path.
+      LogPath: ""
+    # Turn on local mode to skip EC2 instance metadata check.
+    LocalMode: false
+    # Amazon Resource Name (ARN) of the AWS resource running the daemon.
+    ResourceARN: ""
+    # Assume an IAM role to upload segments to a different account.
+    RoleARN: ""
+    # Disable TLS certificate verification.
+    NoVerifySSL: false
+    # Upload segments to AWS X-Ray through a proxy.
+    ProxyAddress: ""
+    # Daemon configuration file format version.
+    Version: 2
+---
+# k8s service definition for AWS X-Ray daemon headless service
+apiVersion: v1
+kind: Service
+metadata:
+  name: xray-service
+  namespace: kube-system
+spec:
+  selector:
+    app: xray-daemon
+  clusterIP: None
+  ports:
+  - name: incoming
+    port: 2000
+    protocol: UDP
+  - name: incoming-tcp
+    port: 2000
+    protocol: TCP

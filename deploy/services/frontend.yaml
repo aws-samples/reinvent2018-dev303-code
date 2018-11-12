@@ -1,0 +1,98 @@
+#
+# Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify,
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: microservices-aws
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: frontend
+        product: storefront
+    spec:
+      containers:
+        - name: frontend
+          image: ckassen/frontend:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: "/healthz"
+              port: 8080
+              httpHeaders:
+              - name: "Cookie"
+                value: "microservices_store_sid=x-probe"
+          livenessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 30
+            httpGet:
+              path: "/healthz"
+              port: 8080
+              httpHeaders:
+              - name: "Cookie"
+                value: "microservices_store_sid=x-probe"
+          envFrom:
+            - configMapRef:
+                name: services-environment-config
+          env:
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: microservices-aws
+                key: frontend
+          resources:
+            requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: microservices-aws
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-external
+  namespace: microservices-aws
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080

@@ -1,0 +1,22 @@
+<div class="album py-5 bg-light">
+  <div class="container">
+    <!-- <div class="card-deck"> -->
+    <div class="card-columns">
+      {{#each product}}
+      <div class="card">
+        <img class="card-img-top" style="height: 225px; width: 100%; display: block;" src="{{imageservice}}/{{this.picture}}?height=225" alt="{{this.name}}">
+        <div class="card-body">
+          <h5 class="card-title">{{this.name}}</h5>
+          <p class="card-text">{{this.description}}</p>
+          <p class="card-text"><small class="text-muted">Only ${{this.offer.price}}</small></p>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Buy and Details">
+            <a href="/product/{{this.id}}" class="btn btn-outline-secondary btn-sm">Show more...</a>
+          </div>
+        </div>
+      </div>
+      {{else}}
+      <p class="empty">No products found</p>
+      {{/each}}
+
+    </div>
+  </div>

@@ -1,0 +1,63 @@
+#
+# Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify,
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: microservices-aws
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: services-environment-config
+  namespace: microservices-aws
+data:
+  # Application runtime configuration
+  DEBUG: "FALSE"
+  FLASK_ENV: "production"
+  NODE_ENV: "production"
+  # AWS Configuration
+  AWS_REGION: "us-west-2"
+  ORDER_QUEUE: "demostore-orderqueue"
+  # Service Endpoints
+  REDIS_HOST: "redis-microservices-aws"
+  CATALOG_ENDPOINT: "catalogservice"
+  CART_ENDPOINT: "cartservice"
+  ORDER_ENDPOINT: "orderservice"
+  RECOMMENDER_ENDPOINT: "recommenderservice"
+  CATALOG_ENDPOINT: "catalogservice"
+  IMAGE_ENDPOINT: "imageservice"
+  # Redis in-cluster
+  REDIS_ENDPOINT: "redis://redis-microservices-aws:6379/0"
+  AWS_XRAY_DAEMON_ADDRESS: "xray-service.kube-system.svc.cluster.local:2000"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: microservices-aws
+  namespace: microservices-aws
+type: Opaque
+data:
+  # Random secret data, replace with your own.
+  catalogservice: rDZ5zZvHWlM3eglao9GheQ==
+  frontend: cUimTUVuP2//wDj5/JDzXQ==
+  cartservice: zS+t5IyqWlRnm6WeoOPlXg==
+  recommenderservice: WO7r9Dzn78vARQrKVMm67g==
+  orderservice: 4vrwrwMmPkc/HLk4X64uXg==

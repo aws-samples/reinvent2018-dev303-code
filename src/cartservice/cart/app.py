@@ -1,0 +1,49 @@
+#
+# Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify,
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+
+import redis
+
+from flask import Flask
+
+from cart.api.routes import api
+
+def create_app(config=None, testing=False):
+    """Application factory, used to create application
+    """
+    app = Flask('cart')
+
+    configure_app(app, testing)
+    app.config['redis'] = redis.StrictRedis.from_url(app.config['REDIS_ENDPOINT'])
+
+    register_blueprints(app)
+
+    return app
+
+def configure_app(app, testing=False):
+    """set configuration for application
+    """
+    # default configuration
+    app.config.from_object('cart.config.Configuration')
+
+    if testing is True:
+        # override with testing config
+        app.config.from_object('cart.configtest')
+
+def register_blueprints(app):
+    """register all blueprints for application
+    """
+    app.register_blueprint(api)

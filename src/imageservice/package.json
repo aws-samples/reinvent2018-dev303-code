@@ -1,0 +1,28 @@
+{
+  "name": "imageservice",
+  "version": "0.0.2",
+  "license": "MIT-0",
+  "author": {
+    "name": "Christoph Kassen",
+    "email": "chrkas@amazon.de"
+  },
+  "private": true,
+  "scripts": {
+    "start": "nodemon -r dotenv/config ./bin/www"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.360.0",
+    "aws-xray-sdk": "^2.1.0",
+    "body-parser": "~1.18.3",
+    "debug": "~4.1.0",
+    "env-var": "^3.4.1",
+    "express": "^4.16.4",
+    "http-errors": "^1.7.1",
+    "morgan": "^1.9.1",
+    "sharp": "^0.21.0"
+  },
+  "devDependencies": {
+    "dotenv": "^6.1.0",
+    "nodemon": "^1.18.6"
+  }
+}

@@ -1,0 +1,21 @@
+{{#if recommendations}}
+<div id="#recommendations" class="jumbotron jumbotron-fluid rounded">
+    <div class="container">
+        <h2>Related products</h2>
+        <div class="row">
+            {{#each recommendations}}
+            <div class="col">
+                <div class="card mb-5 shadow-sm text-white">
+                    <img class="card-img-top" style="max-width:338px" src="{{imageservice}}/{{picture}}?width=300" alt="{{name}} - {{manufacturer}}">
+                    <a href="/product/{{id}}" class="text-white">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title">{{name}}</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+{{/if}}

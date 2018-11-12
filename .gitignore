@@ -1,0 +1,4 @@
+# Global ignores
+*.rdb
+credentials.yaml
+.vscode
