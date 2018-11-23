@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ckassen/frontend:latest
+          image: ckassen/frontend:xray
           imagePullPolicy: Always
           ports:
           - containerPort: 8080

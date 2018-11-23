@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: recommenderservice
-          image: ckassen/recommenderservice:latest
+          image: ckassen/recommenderservice:xray
           imagePullPolicy: Always
           ports:
           - containerPort: 8080

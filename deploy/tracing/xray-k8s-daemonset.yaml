@@ -72,6 +72,10 @@ spec:
           containerPort: 2000
           hostPort: 2000
           protocol: UDP
+        - name: xray
+          containerPort: 2000
+          hostPort: 2000
+          protocol: TCP
         volumeMounts:
         - name: config-volume
           mountPath: /aws/xray

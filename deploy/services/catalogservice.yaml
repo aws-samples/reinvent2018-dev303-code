@@ -52,7 +52,7 @@ spec:
               memory: 128Mi
       containers:
         - name: catalogservice
-          image: ckassen/catalogservice:latest
+          image: ckassen/catalogservice:xray
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

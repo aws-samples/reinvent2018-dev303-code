@@ -18,6 +18,9 @@
 import boto3
 from flask import Flask, g 
 
+from aws_xray_sdk.core import xray_recorder, patch_all
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
 from catalog.api.routes import api
 
 def create_app(config=None, testing=False):
@@ -32,6 +35,12 @@ def create_app(config=None, testing=False):
     ddb = boto3.resource('dynamodb', region_name=app.config['AWS_REGION'])
     #app.config['ddb'] = ddb
     app.config['db'] = ddb.Table('ProductCatalog')
+
+    plugins = ('EC2Plugin', 'ECSPlugin')
+    xray_recorder.configure(service='catalogservice',plugins=plugins)
+    XRayMiddleware(app, xray_recorder)
+
+    patch_all()
 
     return app
 

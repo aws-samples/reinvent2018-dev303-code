@@ -19,6 +19,9 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var logger = require("morgan");
+var AWSXRay = require('aws-xray-sdk');
+var xrayExpress = require('aws-xray-sdk-express');
+AWSXRay.config([AWSXRay.plugins.EC2Plugin,AWSXRay.plugins.ECSPlugin]);
 
 var healthRouter = require("./routes/health");
 var indexRouter = require("./routes/index");
@@ -29,7 +32,13 @@ app.use(logger("combined"));
 app.use(express.static(path.join(__dirname, "public/images/static")));
 
 app.use("/healthz", healthRouter);
+
+// Authentication routes
+app.use(xrayExpress.openSegment('ImageService'));
+
 app.use("/", indexRouter);
+
+app.use(xrayExpress.closeSegment());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

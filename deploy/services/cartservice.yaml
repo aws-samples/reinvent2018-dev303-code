@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: cartservice
-          image: ckassen/cartservice:latest
+          image: ckassen/cartservice:xray
           imagePullPolicy: Always
           ports:
           - containerPort: 8080

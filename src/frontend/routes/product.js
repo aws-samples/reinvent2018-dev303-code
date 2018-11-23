@@ -17,6 +17,7 @@
 
 const router = require("express").Router();
 const axios_client = require("../lib/ws_client");
+const AWSXRay = require('aws-xray-sdk-core');
 const env = require("env-var");
 
 /* GET list of all products. */
@@ -42,6 +43,9 @@ router.get("/", function(req, res, next) {
 router.get("/:id", function(req, res, next) {
   var product_id = req.params["id"];
 
+  let segment = AWSXRay.getSegment()
+  segment.addAnnotation('ProductID', product_id);
+
   try {
     axios_client
       .get(
@@ -66,6 +70,7 @@ router.get("/:id", function(req, res, next) {
             render(res, req, products, rec);
           })
           .catch(error => {
+            console.log(error);
             render(res, req, products, undefined);
           });
       })

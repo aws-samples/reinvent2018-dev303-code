@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: imageservice
-          image: ckassen/imageservice:latest
+          image: ckassen/imageservice:xray
           imagePullPolicy: Always
           ports:
           - containerPort: 9000

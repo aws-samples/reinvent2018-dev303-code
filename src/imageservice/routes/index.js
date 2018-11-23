@@ -16,7 +16,7 @@
 //
 
 const router = require("express").Router();
-
+const AWSXRay = require("aws-xray-sdk");
 const fs = require("fs");
 const path = require("path");
 
@@ -40,13 +40,18 @@ router.get("/:path-:source", function(req, res, next) {
   let image;
 
   if (source === undefined) {
-    throw new Error('Invalid input');
+    throw new Error("Invalid input");
   } else {
     //TODO: check parameters
-    image = path.join(__dirname, "../public/images", path.basename(p), path.basename(source));
+    image = path.join(
+      __dirname,
+      "../public/images",
+      path.basename(p),
+      path.basename(source)
+    );
 
     if (fs.existsSync(image) == false) {
-      throw new Error('File does not exist');
+      throw new Error("File does not exist");
     }
   }
   // Parse to integer if possible
@@ -60,12 +65,17 @@ router.get("/:path-:source", function(req, res, next) {
   }
 
   // Set the content-type of the response
-  res.type('jpeg');
-  let f = resize(image, 'jpeg', width, height, filter);
+  res.type("jpeg");
+  var segment = AWSXRay.getSegment();
+
+  var subsegment = segment.addNewSubsegment("ImageResize");
+  let f = resize(image, "jpeg", width, height, filter);
+  subsegment.close();
+
   if (f) {
     f.pipe(res);
   } else {
-    throw new Error('Resize failed');
+    throw new Error("Resize failed");
   }
 });
 

@@ -27,6 +27,7 @@ flask-env = "*"
 requests = "*"
 gunicorn = "*"
 gevent = "*"
+aws-xray-sdk = "*"
 
 [dev-packages]
 pytest = "*"

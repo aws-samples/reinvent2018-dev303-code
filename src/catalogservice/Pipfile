@@ -28,6 +28,7 @@ flask-env = "*"
 gunicorn = "*"
 gevent = "*"
 Faker = ">=0.9.1"
+aws-xray-sdk = "*"
 
 [dev-packages]
 pytest = "*"

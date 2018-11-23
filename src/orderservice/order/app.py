@@ -21,6 +21,10 @@ from flask import Flask
 
 from order.api.routes import api
 
+from aws_xray_sdk.core import xray_recorder, patch_all
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
+
 def create_app(config=None, testing=False):
     """Application factory, used to create application
     """
@@ -36,7 +40,14 @@ def create_app(config=None, testing=False):
 
     register_blueprints(app)
 
+    plugins = ('EC2Plugin', 'ECSPlugin')
+    xray_recorder.configure(service='orderservice', plugins=plugins)
+    XRayMiddleware(app, xray_recorder)
+
+    patch_all()
+
     return app
+
 
 def configure_app(app, testing=False):
     """set configuration for application
@@ -47,6 +58,7 @@ def configure_app(app, testing=False):
     if testing is True:
         # override with testing config
         app.config.from_object('order.configtest')
+
 
 def register_blueprints(app):
     """register all blueprints for application
