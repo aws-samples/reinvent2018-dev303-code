@@ -110,7 +110,7 @@ persistence:
   existingClaim:
 
 adminUser: admin
-adminPassword: WhatHappensInVegas!
+adminPassword: LasVegas!
 
 ## Use an alternate scheduler, e.g. "stork".
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
