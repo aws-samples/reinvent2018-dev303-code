@@ -120,10 +120,10 @@ kubectl get all -n grafana
 You can get Grafana ELB URL using this command. Copy & Paste the returned URL into a browser to access Grafana Web UI.
 
 ```bash
-kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname'}
+kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
-Log in with **Username: admin** and **Password WhatHappensInVegas!**
+Log in with **Username: admin** and **Password LasVegas!**
 
 ### Create Dashboards
 
