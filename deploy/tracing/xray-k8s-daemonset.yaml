@@ -58,7 +58,7 @@ spec:
       hostNetwork: true
       containers:
       - name: xray-daemon
-        image: ckassen/xray-daemon:latest
+        image: amazon/aws-xray-daemon:1
         command: [ "/usr/bin/xray", "-c", "/aws/xray/config.yaml" ]
         resources:
           limits:

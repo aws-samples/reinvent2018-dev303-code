@@ -34,7 +34,7 @@ Then create a repository for each microservice. Provide a **Name** to create the
 
 After the repository is created you will see instructions on how to access the repository and how to build and push a container image to the repository.
 
-![ecr-push](/Users/chrkas/Projekte/reinvent-eks-xray-workshop/docs/images/ecr-push.png)
+![ecr-push](images/ecr-push.png)
 
 We recommend creating a separate **ECR repository** for *each* microservice.
 
