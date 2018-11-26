@@ -15,6 +15,9 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# For reference only, code uses the official AWS X-Ray image from Docker hub now
+# See https://hub.docker.com/r/amazon/aws-xray-daemon/
+
 FROM amazonlinux:2
 
 # Download latest 3.x release of X-Ray daemon
