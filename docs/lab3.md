@@ -15,7 +15,7 @@ Before we can deploy the AWS X-Ray daemon to the EKS cluster we need to apply th
 Find the name of your EKS **worker node group** and attach the **X-Ray IAM policy** to the worker nodes **IAM role**.
 
 ```bash
-PROFILE=$(aws ec2 describe-instances --filters --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
+PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
 
 ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)
 
@@ -51,9 +51,31 @@ xray-daemon-lxt7n   1/1     Running   0          4d
 
 Your Amazon EKS cluster is now ready to send traces from applications to AWS X-Ray
 
-## Instrumenting application code
+## Adding X-Ray to the microservices
 
 To send traces to AWS X-Ray the applications need the required instrumentation in the code to send traces via X-Ray daemon to AWS X-Ray.
+
+There are two options here
+
+- a) Use pre-built container images (*Easy*)
+- b) Instrument the application code yourself (*Informative*)
+
+Choose your approach and continue with one of the two sections below.
+
+## a) Using pre-built containers (*Easy*)
+You can use **pre-built** container images with all the necessary instrumentation enabled and switch the image used for any of the services to use these.
+
+To update *all* container images use
+
+```bash
+for n in cartservice catalogservice frontend imageservice orderservice recommenderservice
+do
+    echo "Updating $n"
+    kubectl set image deployment/$n $n=ckassen/$n:xray -n microservices-aws
+done
+```
+
+## b) Instrumenting application code (*Informative*)
 
 The following code snippets show example code necessary to instrument the "AnyCompany Shop" services with AWS X-Ray instrumentation code.
 
@@ -94,14 +116,18 @@ Use the following resources to learn more about the capabilities of the AWS X-Ra
 - [AWS X-Ray Python SDK](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-python.html) / [SDK on Github](https://github.com/aws/aws-xray-sdk-python)
 - [AWS X-Ray Node.js SDK](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-nodejs.html) / [SDK on Github](https://github.com/aws/aws-xray-sdk-node)
 
-After you add the required instrumentation code **re-build** the Docker image and **push** it up into the **container registry** of your choice. Afterward update the Kubernetes deployment of the service to use the newly built container image from your registry.
+After you add the required instrumentation code **re-build** the Docker image and **push** it up into the **container registry** of your choice.
+
+See [Container Repos](container-repos.md) for guideance on how to create your own container repositories to host the updated container images.
+
+Afterward update the Kubernetes deployment specification of the service to use the newly built container image from your registry.
 
 ```bash
 # Update catalogservice deployment
 kubectl set image deployment/catalogservice catalogservice=<yourregistry>/catalogservice:<your tag> -n microservices-aws
 ```
 
-Repeat the steps for all 6 services to achieve complete observability across all services.
+Repeat the steps for all 6 services to achieve complete **observability** across all services.
 
 Run
 
@@ -110,25 +136,6 @@ kubectl get pods -n microservices-aws
 ```
 
 and check if all Pods are still running without errors.
-
-### Using pre-built containers
-If you do not want to add instrumentation to all applications yourself, or you do not want to re-create all the Docker containers then you can use the **pre-built** container images and switch the image used for any of the services to use these.
-
-To update a *single* container image use
-```
-kubectl set image deployment/catalogservice catalogservice=ckassen/catalogservice:xray -n microservices-aws
-```
-This will update the container image tag for the **Catalogservice** deployment in your Amazon EKS cluster.
-
-To update *all* container images use
-
-```bash
-for n in cartservice catalogservice frontend imageservice orderservice recommenderservice
-do
-    echo "Updating $n"
-    kubectl set image deployment/$n $n=ckassen/$n:xray -n microservices-aws
-done
-```
 
 ## Understanding traces
 

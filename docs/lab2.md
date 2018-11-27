@@ -12,7 +12,7 @@ The `Fluentd-Policy` IAM policy enables the Fluentd daemon to upload logs to Clo
 Find the EKS worker nodes node group **IAM role arn**
 ```bash
 # Get EKS worker node IAM instance role ARN
-PROFILE=$(aws ec2 describe-instances --filters --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
+PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
 
 # Fetch IAM instance role name
 ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)
@@ -65,21 +65,22 @@ We will use **helm** to install Prometheus & Grafana monitoring tools for this c
 
 [Helm](https://helm.sh/) is a tool that streamlines installing and managing Kubernetes applications. Think of it like apt/yum/homebrew for Kubernetes. With helm, you deploy Charts, which are packages of pre-configured Kubernetes resources.
 
-Before we can get started configuring `helm` we'll need to first install the
-command line tools that you will interact with. To do this run the following.
-
+Make sure that helm is installed by running
 ```bash
-curl "https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get" > get_helm.sh
+helm version
 
-chmod +x get_helm.sh
-
-./get_helm.sh
+# Should output something like this
+Client: &version.Version{SemVer:"v2.11.0", GitCommit:"2e55dbe1fdb5fdb96b75ff144a339489417b146b", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"v2.11.0", GitCommit:"2e55dbe1fdb5fdb96b75ff144a339489417b146b", GitTreeState:"clean"}
 ```
 
-Once helm is installed it needs to be added to your Amazon EKS cluster. Run the following commands to set up the **helm** cluster component - named *tiller* - on your cluster.
+**Helm** needs to be added to your Amazon EKS cluster. Run the following commands to set up the **helm** cluster component - named *tiller* - on your cluster.
 ```bash
+# Create service account
 kubectl -n kube-system create serviceaccount tiller
+# Create cluster wide role binding
 kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+# Init helm with service account from above
 helm init --service-account=tiller
 ```
 
@@ -133,7 +134,7 @@ Click '**+**' button on the left panel and select **Import**
 
 ![grafana-import](images/grafana-import.png)
 
-Enter **3131** dashboard id under Grafana.com Dashboard & click **'Load'**.
+Paste the **JSON** contents from the file `deploy/monitoring/cluster-dashboard.json` into the input field.
 
 Leave the defaults, select **'Prometheus'** as the endpoint under prometheus data sources drop down, click **'Import'**.
 
@@ -141,7 +142,7 @@ Leave the defaults, select **'Prometheus'** as the endpoint under prometheus dat
 
 This will show a monitoring dashboard for all cluster nodes.
 
-To create a dashboard to monitor all pods, repeat the same process as above and enter **3146** as dashboard id.
+To create a dashboard to monitor all pods, repeat the same process as above and paste the **JSON** contents from the file `deploy/monitoring/pod-dashboard.json` into the input field.
 
 # Next Step
 
