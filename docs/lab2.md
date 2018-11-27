@@ -67,19 +67,35 @@ We will use **helm** to install Prometheus & Grafana monitoring tools for this c
 
 Make sure that helm is installed by running
 ```bash
-helm version
+helm version --client
 
 # Should output something like this
 Client: &version.Version{SemVer:"v2.11.0", GitCommit:"2e55dbe1fdb5fdb96b75ff144a339489417b146b", GitTreeState:"clean"}
-Server: &version.Version{SemVer:"v2.11.0", GitCommit:"2e55dbe1fdb5fdb96b75ff144a339489417b146b", GitTreeState:"clean"}
 ```
 
+<details><summary>Installing helm manually</summary>
+<p>
+
+If helm is not already installed, run
+```bash
+# Install helm
+curl "https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get" > get_helm.sh
+chmod +x get_helm.sh
+./get_helm.sh
+```
+
+</p>
+</details>
+
 **Helm** needs to be added to your Amazon EKS cluster. Run the following commands to set up the **helm** cluster component - named *tiller* - on your cluster.
+
 ```bash
 # Create service account
 kubectl -n kube-system create serviceaccount tiller
+
 # Create cluster wide role binding
 kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+
 # Init helm with service account from above
 helm init --service-account=tiller
 ```

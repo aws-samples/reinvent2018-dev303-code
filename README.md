@@ -46,6 +46,11 @@ The services are either build in Node.js and the Express framework or Python wit
 
 ## Troubleshooting
 
+#### Cloud9 not connecting
+Make sure the Cloud9 EC2 instances is running. Check that it has a **public** IP attached, otherwise the Browser-Component will not be able to connect.
+
+If you can not get Cloud9 to work use a regular EC2 Linux instance to run the commands.
+
 #### EKS cluster authentication failure
 Make sure that you did not create the cluster with the AWS account root user. You have to use an IAM user when creating the EKS cluster.
 
