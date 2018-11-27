@@ -6,6 +6,39 @@ documentation, we greatly value feedback and contributions from our community.
 Please read through this document before submitting any issues or pull requests to ensure we have all the necessary
 information to effectively respond to your bug report or contribution.
 
+## Source Code Structure
+
+Open the code in your favorite text editor. The source code for all services is located at the `src/` directory.
+
+```
+cd reinvent2018-dev303-code
+
+./src
+ |-- cartservice
+ |-- catalogservice
+ |-- frontend
+ |-- imageservice
+ |-- loadgen
+ |-- orderservice
+ |-- randomizer
+ |-- recommenderservice
+ `-- xray-daemon
+```
+
+ Configure **.env** files to export settings for each service. Copy the provided localdev.env files and name them .env. Every service is using a dotenv package to read these values and override the defaults.
+
+## Install dependencies for local development
+
+Install these dependencies if you would like to run the services locally to simplify development.
+
+1. Install node.js
+2. Install Python
+3. Install pipenv
+4. Install Redis
+
+## Rebuild container images
+
+See [Container Repos](container-repos.md) for guideance on how to create your own container repositories to host rebuilt container images.
 
 ## Reporting Bugs/Feature Requests
 
