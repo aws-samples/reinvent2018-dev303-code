@@ -50,6 +50,11 @@ export AWS_DEFAULT_REGION=${availability_zone%?}
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
+# Install helm
+curl "https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get" > get_helm.sh
+chmod +x get_helm.sh
+./get_helm.sh
+
 # Persist lab variables
 echo "AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION" >> ~/.bash_profile
 echo "export AWS_REGION=${AWS_DEFAULT_REGION}" >> ~/.bash_profile

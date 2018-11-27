@@ -109,6 +109,23 @@ Confirm your eksctl version is at least `0.1.11` with the command
 eksctl version
 ```
 
+### Install `helm`
+
+To quickly deploy applications such as Prometheus or Grafana to a Kubernetes cluster helm can be used. It's a package manager for Kubernetes applications. We'll need to install the command line tools first, that you will interact with. To do this run the following.
+
+```bash
+curl "https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get" > get_helm.sh
+
+chmod +x get_helm.sh
+
+./get_helm.sh
+```
+
+Make sure that helm is installed by running
+```
+helm version
+```
+
 ### Create SSH Key
 
 By default **eksctl** uses the **~/.ssh/id_rsa** SSH key. If this does not exist on your machine you can create it with 
