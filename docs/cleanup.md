@@ -58,4 +58,6 @@ Delete the EKS cluster
 eksctl delete cluster --name dev303-workshop --region us-west-2
 ```
 
+As last step delete the Cloud9 environment. Go to the Cloud9 dashboard (not the IDE) and remove the environment.
+
 The cleanup process is now complete.
