@@ -15,7 +15,7 @@ Before we can deploy the AWS X-Ray daemon to the EKS cluster we need to apply th
 Find the name of your EKS **worker node group** and attach the **X-Ray IAM policy** to the worker nodes **IAM role**.
 
 ```bash
-PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
+PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=*dev303* --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
 
 ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)
 
@@ -71,7 +71,7 @@ To update *all* container images use
 for n in cartservice catalogservice frontend imageservice orderservice recommenderservice
 do
     echo "Updating $n"
-    kubectl set image deployment/$n $n=ckassen/$n:xray -n microservices-aws
+    kubectl set image deployment/$n $n=ckassen/$n\:xray -n microservices-aws
 done
 ```
 
