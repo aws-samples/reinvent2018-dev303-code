@@ -36,7 +36,6 @@ data:
   AWS_REGION: "us-west-2"
   ORDER_QUEUE: "demostore-orderqueue"
   # Service Endpoints
-  REDIS_HOST: "redis-microservices-aws"
   CATALOG_ENDPOINT: "catalogservice"
   CART_ENDPOINT: "cartservice"
   ORDER_ENDPOINT: "orderservice"
