@@ -74,6 +74,10 @@ Click **Next** on the *following* screen, leaving everything unchanged until you
 
 First, deploy the definitions to prepare the environment. This step creates a Kubernetes **namespace** for the microservices and configures the **environment**.
 
+> **Note**
+>
+> If you are not deploying to the *us-west-2* region you need to update the AWS_REGION variable in the following file `deploy/eks/prep.yaml` to point to the region used.
+
 ```
 kubectl create -f deploy/eks/prep.yaml
 ```
