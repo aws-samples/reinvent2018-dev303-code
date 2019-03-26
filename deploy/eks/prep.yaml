@@ -33,7 +33,7 @@ data:
   FLASK_ENV: "production"
   NODE_ENV: "production"
   # AWS Configuration
-  AWS_REGION: "us-west-2"
+  AWS_REGION: "eu-west-1"
   ORDER_QUEUE: "demostore-orderqueue"
   # Service Endpoints
   CATALOG_ENDPOINT: "catalogservice"
