@@ -12,7 +12,7 @@ Use the following command to create your **EKS** cluster **without** adding ssh 
 ```bash
 eksctl create cluster \
 --name dev303-workshop \
---region eu-west-1 \
+--region us-west-2 \
 --nodes=4
 ```
 
@@ -21,12 +21,12 @@ eksctl create cluster \
 ```bash
 eksctl create cluster \
 --name dev303-workshop \
---region eu-west-1 \
+--region us-west-2 \
 --nodes=4
 --ssh-access --ssh-public-key=myid_rsa_ssh_key.pub
 ```
 
-This will create a cluster in the eu-west-1 (Ireland) region with 4 x m5.large instances.
+This will create a cluster in the us-west-2 (Oregon) region with 4 x m5.large instances.
 
 > **Note**
 > 
@@ -42,10 +42,10 @@ and you should see a list of nodes:
 ```bash
 $ kubectl get nodes
 NAME                                           STATUS    ROLES     AGE       VERSION
-ip-192-168-29-95.eu-west-1.compute.internal    Ready     <none>    2m        v1.10.3
-ip-192-168-62-87.eu-west-1.compute.internal    Ready     <none>    2m        v1.10.3
-ip-192-168-70-32.eu-west-1.compute.internal    Ready     <none>    2m        v1.10.3
-ip-192-168-74-223.eu-west-1.compute.internal   Ready     <none>    2m        v1.10.3
+ip-192-168-29-95.us-west-2.compute.internal    Ready     <none>    2m        v1.10.3
+ip-192-168-62-87.us-west-2.compute.internal    Ready     <none>    2m        v1.10.3
+ip-192-168-70-32.us-west-2.compute.internal    Ready     <none>    2m        v1.10.3
+ip-192-168-74-223.us-west-2.compute.internal   Ready     <none>    2m        v1.10.3
 ```
 
 ## Deploy "AnyCompany Shop" microservices application
@@ -63,7 +63,7 @@ Use the CloudFormation template to create a new Stack in the CloudFormation cons
 ```bash
 aws cloudformation create-stack \
 --stack-name dev303-workshop \
---template-url https://s3.amazonaws.com/aws-tracing-workshop-artifacts/cloudformation.yaml --capabilities CAPABILITY_NAMED_IAM --region eu-west-1
+--template-url https://s3.amazonaws.com/aws-tracing-workshop-artifacts/cloudformation.yaml --capabilities CAPABILITY_NAMED_IAM --region us-west-2
 ```
 
 ##### *UI Walkthrough*
@@ -86,7 +86,7 @@ First, deploy the definitions to prepare the environment. This step creates a Ku
 
 > **Note**
 >
-> If you are not deploying to the *eu-west-1* region you need to update the AWS_REGION variable in the following file `deploy/eks/prep.yaml` to point to the region used.
+> If you are not deploying to the *us-west-2* region you need to update the AWS_REGION variable in the following file `deploy/eks/prep.yaml` to point to the region used.
 
 ```
 kubectl create -f deploy/eks/prep.yaml
