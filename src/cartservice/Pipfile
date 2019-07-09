@@ -26,7 +26,7 @@ redis = "*"
 requests = "*"
 flask-env = "*"
 gunicorn = "*"
-gevent = "*"
+gevent = ">=1.4.0"
 
 [dev-packages]
 pytest = "*"

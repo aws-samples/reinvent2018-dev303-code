@@ -26,7 +26,7 @@ Flask = ">=1.0.2"
 boto3 = "*"
 flask-env = "*"
 gunicorn = "*"
-gevent = "*"
+gevent = ">=1.4.0"
 Faker = ">=0.9.1"
 
 [dev-packages]

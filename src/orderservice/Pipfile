@@ -26,7 +26,7 @@ boto3 = "*"
 flask-env = "*"
 requests = "*"
 gunicorn = "*"
-gevent = "*"
+gevent = ">=1.4.0"
 
 [dev-packages]
 pytest = "*"
