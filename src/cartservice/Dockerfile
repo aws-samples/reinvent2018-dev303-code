@@ -15,7 +15,7 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM python:3-alpine3.8
+FROM python:3-alpine
 
 RUN apk add --no-cache --virtual .build-deps \
     build-base libev \

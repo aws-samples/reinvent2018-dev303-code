@@ -15,14 +15,15 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM python:3-alpine3.8
+FROM python:3-alpine
 
 RUN apk add --no-cache --virtual .build-deps \
-    build-base libev \
+    build-base gcc musl-dev zlib-dev libffi-dev openssl-dev ca-certificates \
     && pip install gevent \
     && apk del --no-cache .build-deps \
     && rm -rf /var/cache/apk/* /root/.cache /tmp/*
-    
+
+
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
