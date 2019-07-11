@@ -4,6 +4,17 @@ Access to log information from the containers that were deployed to your Amazon 
 
 In this lab, you will be using CloudWatch Logs to monitor the logs of your containers and Prometheus/Grafana to monitor metrics.
 
+## Using Amazon CloudWatch Container Insights
+Please follow the instructions in the CloudWatch Container Insights documentation at https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html
+to set up the necessary permissions for your worker nodes, set up CWAgent daemonset and add Fluentd daemonset to your EKS cluster.
+
+Afterwards head to the Amazon CloudWatch console [CloudWatch Container Insights console](https://eu-central-1.console.aws.amazon.com/cloudwatch/home?region=eu-central-1#cw:dashboard=Container;context=~(clusters~(~)~dimensions~(~)~performanceType~'ClusterName)) and view metrics for your cluster. You can switch to CloudWatch Logs Insights to view the logs for each individual Pod directly from this dashboard.
+
+***
+## Previous Instructions
+
+Recommended approach is to use Amazon CloudWatch Container Insights. If you still like to run Prometheus, Grafana and Fluentd on your Amazon EKS cluster then follow the instructions below.
+
 ## Collecting logs using `Fluentd`
 Deploy Fluentd as a Daemonset to collect logs and send them to CloudWatch Logs. To do this the following Docker image https://hub.docker.com/r/fluent/fluentd-kubernetes-daemonset/ is used to host Fluentd as a DaemonSet on your Amazon EKS cluster.
 
