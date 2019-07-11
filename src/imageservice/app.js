@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  //console.log(err);
+  console.log(err);
 
   // Respond with a error image
   res.sendFile(path.join(__dirname, "public/static/error.jpg"));

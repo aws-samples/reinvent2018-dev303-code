@@ -83,11 +83,11 @@ function resize(filepath, format, width = 400, height = 400, filter) {
       transform = transform.greyscale();
     }
 
-    transform = transform.resize(width, height).crop(sharp.gravity.center);
+    transform = transform.resize(width, height);
 
     return readStream.pipe(transform);
   } catch (e) {
-    //console.log(e);
+    console.log(e);
   }
 }
 
