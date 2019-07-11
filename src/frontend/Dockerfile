@@ -15,7 +15,7 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM node:10-alpine
+FROM node:12-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
