@@ -2,3 +2,4 @@
 *.rdb
 credentials.yaml
 .vscode
+node_modules

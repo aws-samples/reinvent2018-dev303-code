@@ -29,8 +29,11 @@ helm del --purge grafana
 Detach IAM roles from the EKS worker node group IAM role. This needs to be done before removing the CloudFormation Stack.
 
 ```bash
-# Get IAM instance profile
-PROFILE=$(aws ec2 describe-instances --filters --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
+# Get the nodegroup (assuming there is only 1 nodegroup at this point)
+NODEGROUP=$(eksctl get nodegroups --cluster=dev303-workshop | awk '{print $2}' | tail -n1)
+
+# Get EKS worker node IAM instance role ARN
+PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-$NODEGROUP-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
 
 # Get EKS worker node IAM role
 ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)

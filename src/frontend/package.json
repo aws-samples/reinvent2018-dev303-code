@@ -12,24 +12,24 @@
     "devenv": "concurrently \"redis-server\" \"nodemon -r dotenv/config ./bin/www\""
   },
   "dependencies": {
-    "aws-sdk": "^2.363.0",
-    "aws-xray-sdk": "^2.1.0",
-    "aws-xray-sdk-express": "^2.1.0",
-    "axios": "0.18.0",
+    "aws-sdk": "^2.489.0",
+    "aws-xray-sdk": "^2.5.0",
+    "aws-xray-sdk-express": "^2.5.0",
+    "axios": "~0.19.0",
     "body-parser": "~1.18.3",
-    "connect-redis": "~3.4.0",
+    "connect-redis": "^3.4.2",
     "cookie-parser": "~1.4.3",
     "debug": "~4.1.0",
-    "env-var": "^3.4.1",
-    "express": "^4.16.4",
-    "express-session": "^1.15.6",
-    "hbs": "^4.0.1",
-    "http-errors": "^1.7.1",
+    "env-var": "^5.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "hbs": "^4.1.0",
+    "http-errors": "^1.7.3",
     "morgan": "^1.9.1"
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "dotenv": "^6.1.0",
-    "nodemon": "^1.18.7"
+    "concurrently": "^4.1.1",
+    "dotenv": "^8.0.0",
+    "nodemon": "^1.19.4"
   }
 }

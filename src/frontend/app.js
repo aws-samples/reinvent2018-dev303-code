@@ -73,7 +73,7 @@ app.use(function(req, res, next) {
 
     if (req.session !== undefined) return next();
 
-    if (tries < 0) return next(new Error("oh no"));
+    if (tries < 0) return next(new Error("Can not start session. Is the session store available?"));
 
     sessionMiddleware(req, res, lookupSession);
   }
