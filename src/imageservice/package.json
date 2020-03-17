@@ -1,6 +1,6 @@
 {
   "name": "imageservice",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT-0",
   "author": {
     "name": "Christoph Kassen",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "minimist": ">=1.2.2"
   }
 }
