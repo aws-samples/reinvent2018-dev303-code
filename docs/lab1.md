@@ -7,13 +7,23 @@
 >
 > Double check that the required tooling is installed before creating a cluster. You need to have the AWS CLI installed and configured and `kubectl` must is installed as well.
 
-Use the following command to create your **EKS** cluster:
+Use the following command to create your **EKS** cluster **without** adding ssh keys for access to the worker nodes (ssh access is not required to complete the workshop!):
 
 ```bash
 eksctl create cluster \
 --name dev303-workshop \
 --region us-west-2 \
 --nodes=4
+```
+
+**Advanced** Use the following command to create your **EKS** cluster **adding** ssh keys for access to the worker nodes (first generate your ssh keypair if not done already):
+
+```bash
+eksctl create cluster \
+--name dev303-workshop \
+--region us-west-2 \
+--nodes=4
+--ssh-access --ssh-public-key=myid_rsa_ssh_key.pub
 ```
 
 This will create a cluster in the us-west-2 (Oregon) region with 4 x m5.large instances.
@@ -53,7 +63,7 @@ Use the CloudFormation template to create a new Stack in the CloudFormation cons
 ```bash
 aws cloudformation create-stack \
 --stack-name dev303-workshop \
---template-url https://s3.amazonaws.com/aws-tracing-workshop-artifacts/cloudformation.yaml --capabilities CAPABILITY_NAMED_IAM
+--template-url https://s3.amazonaws.com/aws-tracing-workshop-artifacts/cloudformation.yaml --capabilities CAPABILITY_NAMED_IAM --region us-west-2
 ```
 
 ##### *UI Walkthrough*
@@ -74,6 +84,10 @@ Click **Next** on the *following* screen, leaving everything unchanged until you
 
 First, deploy the definitions to prepare the environment. This step creates a Kubernetes **namespace** for the microservices and configures the **environment**.
 
+> **Note**
+>
+> If you are not deploying to the *us-west-2* region you need to update the AWS_REGION variable in the following file `deploy/eks/prep.yaml` to point to the region used.
+
 ```
 kubectl create -f deploy/eks/prep.yaml
 ```
@@ -83,8 +97,12 @@ kubectl create -f deploy/eks/prep.yaml
 
 Attach the necessary IAM policies to the worker nodes. This will enable containers running on these nodes to access AWS resources. Two of the services you will deploy in the next step are making use of this to access DynamoDB and SQS.
 ```bash
+
+# Get the nodegroup (assuming there is only 1 nodegroup at this point)
+NODEGROUP=$(eksctl get nodegroups --cluster=dev303-workshop | awk '{print $2}' | tail -n1)
+
 # Get EKS worker node IAM instance role ARN
-PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-0-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
+PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-$NODEGROUP-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
 
 # Fetch IAM instance role name
 ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)

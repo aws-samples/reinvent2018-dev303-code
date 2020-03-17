@@ -15,7 +15,11 @@ Before we can deploy the AWS X-Ray daemon to the EKS cluster we need to apply th
 Find the name of your EKS **worker node group** and attach the **X-Ray IAM policy** to the worker nodes **IAM role**.
 
 ```bash
-PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=*dev303* --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
+# Get the nodegroup (assuming there is only 1 nodegroup at this point)
+NODEGROUP=$(eksctl get nodegroups --cluster=dev303-workshop | awk '{print $2}' | tail -n1)
+
+# Get EKS worker node IAM instance role ARN
+PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-$NODEGROUP-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
 
 ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)
 
