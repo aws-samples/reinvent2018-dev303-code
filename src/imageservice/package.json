@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.489.0",
-    "aws-xray-sdk": "^2.3.3",
+    "aws-xray-sdk": "^2.5.0",
     "body-parser": "~1.19.0",
     "debug": "~4.1.1",
     "env-var": "^5.0.0",
@@ -22,7 +22,7 @@
     "sharp": "^0.22.1"
   },
   "devDependencies": {
-    "dotenv": "^8.0.0",
-    "nodemon": "^1.19.1"
+    "dotenv": "^8.2.0",
+    "nodemon": "^1.19.4"
   }
 }
