@@ -30,7 +30,7 @@
   "devDependencies": {
     "concurrently": "^4.1.1",
     "dotenv": "^8.0.0",
-    "nodemon": "^1.19.4",
-    "minimist": ">=1.2.2"
+    "minimist": ">=1.2.2",
+    "nodemon": "^2.0.3"
   }
 }
