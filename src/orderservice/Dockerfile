@@ -17,7 +17,7 @@
 
 FROM python:3-slim
 
-RUN apt-get install -y libev-dev build-essential \
+RUN apt-get update && apt-get install -y libev-dev build-essential \
     && pip install gevent \
     && apt-get autoclean
     
