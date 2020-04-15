@@ -118,6 +118,11 @@ EOF
 
 This will create a StorageClass in your Amazon EKS cluster.
 
+# Changelog
+
+* **04/15/2020 Merge xray branch into master to ease deployment and maintainability.
+  
+
 # References & Acknowledgements
 1. [Amazon EKS Workshop](https://eksworkshop.com/)
 2. [Sockshop - Weaveworks](https://github.com/weaveworks)

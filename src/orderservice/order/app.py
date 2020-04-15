@@ -32,12 +32,6 @@ def create_app(config=None, testing=False):
 
     configure_app(app, testing)
 
-    sqs = boto3.client('sqs', region_name=app.config['AWS_REGION'])
-    queue_url = sqs.get_queue_url(QueueName=app.config['ORDER_QUEUE'])['QueueUrl']
-
-    app.config['sqs'] = sqs
-    app.config['queue_url'] = queue_url
-
     register_blueprints(app)
 
     plugins = ('EC2Plugin', 'ECSPlugin')

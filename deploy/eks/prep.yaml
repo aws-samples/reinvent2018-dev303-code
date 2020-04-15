@@ -34,7 +34,6 @@ data:
   NODE_ENV: "production"
   # AWS Configuration
   AWS_REGION: "us-west-2"
-  ORDER_QUEUE: "demostore-orderqueue"
   # Service Endpoints
   CATALOG_ENDPOINT: "catalogservice"
   CART_ENDPOINT: "cartservice"
@@ -43,7 +42,7 @@ data:
   CATALOG_ENDPOINT: "catalogservice"
   IMAGE_ENDPOINT: "imageservice"
   # Redis in-cluster
-  REDIS_ENDPOINT: "redis://redis-microservices-aws:6379/0"
+  REDIS_ENDPOINT: "redis://redis:6379/0"
   AWS_XRAY_DAEMON_ADDRESS: "xray-service.kube-system.svc.cluster.local:2000"
 
 ---

@@ -32,10 +32,6 @@ def create_app(config=None, testing=False):
 
     register_blueprints(app)
 
-    ddb = boto3.resource('dynamodb', region_name=app.config['AWS_REGION'])
-    #app.config['ddb'] = ddb
-    app.config['db'] = ddb.Table('ProductCatalog')
-
     plugins = ('EC2Plugin', 'ECSPlugin')
     xray_recorder.configure(service='catalogservice',plugins=plugins)
     XRayMiddleware(app, xray_recorder)

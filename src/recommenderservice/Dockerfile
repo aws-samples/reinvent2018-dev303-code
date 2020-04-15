@@ -15,7 +15,7 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM python:3-alpine
+FROM python:3.7-alpine
 
 RUN apk add --no-cache --virtual .build-deps \
     build-base gcc musl-dev zlib-dev libffi-dev openssl-dev ca-certificates \

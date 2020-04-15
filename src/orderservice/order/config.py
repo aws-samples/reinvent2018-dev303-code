@@ -27,4 +27,3 @@ class Configuration(metaclass=MetaFlaskEnv):
     AWS_REGION = "us-west-2"
     CART_ENDPOINT = "localhost:6000"
     CATALOG_ENDPOINT = "localhost:5000"
-    ORDER_QUEUE = "demostore-orderqueue"

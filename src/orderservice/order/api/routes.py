@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -16,7 +16,6 @@
 #
 
 import json
-import boto3
 import requests
 
 from flask import Blueprint, current_app, jsonify, request
@@ -85,18 +84,7 @@ def post():
         "products": product_detail_list,
     }
 
-    # List SQS queues
-    # Create SQS client
-    response = current_app.config['sqs'].send_message(
-        QueueUrl=current_app.config['queue_url'],
-        MessageBody=json.dumps(order),
-        DelaySeconds=20
-    )
-
-    if response:
-        return jsonify({"order_id": response['MessageId'], "code": 200, "status": "Order created"}), 200
-
-    return jsonify({"order_id": "", "code": 500, "status": "Failed to create order"}), 500
+    return jsonify({"order_id": "1234567890", "code": 200, "status": "Order created", "data": json.dumps(order)}), 200
 
 @api.route('/healthz')
 def health():

@@ -10,23 +10,21 @@ In this module, we are going to deploy the [X-Ray agent](https://docs.aws.amazon
 
 ### IAM permissions for worker nodes
 
-Before we can deploy the AWS X-Ray daemon to the EKS cluster we need to apply the necessary IAM permissions. Attach the `AWSXRayDaemonWriteAccess` policy to the node group created by eksctl. This allows the X-Ray Pods on any worker node to send trace data to the AWS X-Ray backend. 
-
-Find the name of your EKS **worker node group** and attach the **X-Ray IAM policy** to the worker nodes **IAM role**.
+Before we can deploy the AWS X-Ray daemon to the EKS cluster we need to apply the necessary IAM permissions. Attach the `AWSXRayDaemonWriteAccess` policy to the service account for the X-Ray daemon. This allows the X-Ray Pods on any worker node to send trace data to the AWS X-Ray backend. These instructions use eksctl to enable the necessary setup in the EKS cluster and create a service account attached to the right IAM role.
 
 ```bash
-# Get the nodegroup (assuming there is only 1 nodegroup at this point)
-NODEGROUP=$(eksctl get nodegroups --cluster=dev303-workshop | awk '{print $2}' | tail -n1)
+eksctl utils associate-iam-oidc-provider \
+               --name dev303-workshop \
+               --approve
+```
 
-# Get EKS worker node IAM instance role ARN
-PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-$NODEGROUP-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
-
-ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)
-
-echo $ROLE
-
-# Attach IAM policy to enable AWS X-Ray access
-aws iam attach-role-policy --role-name $ROLE --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+```bash
+eksctl create iamserviceaccount \
+                --name xray-daemon \
+                --namespace microservices-aws \
+                --cluster dev303-workshop \
+                --attach-policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess \
+                --approve
 ```
 
 ### Deploy AWS X-Ray daemonset
@@ -67,17 +65,7 @@ There are two options here
 Choose your approach and continue with one of the two sections below.
 
 ## a) Using pre-built containers (*Easy*)
-You can use **pre-built** container images with all the necessary instrumentation enabled and switch the image used for any of the services to use these.
-
-To update *all* container images use
-
-```bash
-for n in cartservice catalogservice frontend imageservice orderservice recommenderservice
-do
-    echo "Updating $n"
-    kubectl set image deployment/$n $n=ckassen/$n\:xray -n microservices-aws
-done
-```
+When you use the **pre-built** container images, all the necessary instrumentation is already enabled.
 
 ## b) Instrumenting application code (*Informative*)
 

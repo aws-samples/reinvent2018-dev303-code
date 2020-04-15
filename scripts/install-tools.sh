@@ -19,9 +19,8 @@
 #description     This script will setup the Cloud9 IDE with the prerequisite packages and code for the workshop.
 #author          @chrkas
 #contributors    @buzzsurfr @dalbhanj @cloudymind
-#date            2018-11-20
-#version         0.1
-#usage           curl -sSL https://s3.amazonaws.com/aws-tracing-workshop-artifacts/install-tools.sh | bash -s stable
+#date            2020-04-15
+#version         0.2
 #==============================================================================
 
 # Install jq
