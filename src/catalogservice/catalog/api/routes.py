@@ -18,7 +18,7 @@
 import decimal
 import json
 
-from catalogservice.catalog.api.catalog import productdata
+from catalog.api.catalog import productdata
 
 from flask import Blueprint, Response, current_app, jsonify, json
 
