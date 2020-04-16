@@ -19,7 +19,9 @@ FROM python:3-slim
 
 RUN apt-get update && apt-get install -y libev-dev build-essential \
     && pip install gevent \
-    && apt-get autoclean
+    && apt-get remove --purge -y libev-dev build-essential \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
     
 WORKDIR /usr/src/app
 

@@ -15,13 +15,11 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM python:3-alpine3.8
+FROM python:3-slim
 
-RUN apk add --no-cache \
-    python3-dev \
-    build-base \
-    bash \
-    && rm -rf /var/cache/apk/* /root/.cache /tmp/*
+RUN apt-get update && apt-get install -y python3-dev bash build-essential \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 

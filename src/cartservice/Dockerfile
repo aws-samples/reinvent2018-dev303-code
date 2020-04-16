@@ -15,13 +15,13 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM python:3.7-alpine
+FROM python:3-slim
 
-RUN apk add --no-cache --virtual .build-deps \
-    build-base libev \
-    && pip install gevent \
-    && apk del --no-cache .build-deps \
-    && rm -rf /var/cache/apk/* /root/.cache /tmp/*
+RUN apt-get update && apt-get install -y libev-dev build-essential \
+&& pip install gevent \
+&& apt-get remove --purge -y libev-dev build-essential \
+&& rm -rf /var/lib/apt/lists/* \
+&& rm -rf /tmp/*
 
 WORKDIR /usr/src/app
 
