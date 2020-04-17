@@ -15,7 +15,7 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-FROM python:3-slim
+FROM python:3.7-slim
 
 RUN apt-get update && apt-get install -y python3-dev bash build-essential \
     && apt-get clean -y \

@@ -21,10 +21,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-locustio = "*"
 beautifulsoup4 = "*"
+locustio = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"
