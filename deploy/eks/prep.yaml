@@ -43,7 +43,7 @@ data:
   IMAGE_ENDPOINT: "imageservice"
   # Redis in-cluster
   REDIS_ENDPOINT: "redis://redis:6379/0"
-  AWS_XRAY_DAEMON_ADDRESS: "xray-service.kube-system.svc.cluster.local:2000"
+  AWS_XRAY_DAEMON_ADDRESS: "xray-service:2000"
 
 ---
 apiVersion: v1
