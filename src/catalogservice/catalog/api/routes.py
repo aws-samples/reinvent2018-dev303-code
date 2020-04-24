@@ -18,70 +18,28 @@
 import decimal
 import json
 
+from catalog.api.catalog import productdata
+
 from flask import Blueprint, Response, current_app, jsonify, json
 
-from boto3.dynamodb.conditions import Key
-from botocore.exceptions import ClientError
-
-
-class DecimalEncoder(json.JSONEncoder):
-    """Helper class to convert a DynamoDB item to JSON."""
-
-    def default(self, o):
-        if isinstance(o, decimal.Decimal):
-            if o % 1 > 0:
-                return float(o)
-            else:
-                return int(o)
-        return super(DecimalEncoder, self).default(o)
-
-
 api = Blueprint('api', 'api', url_prefix='/api/v1')
-
 
 @api.route('/product/<string:product_id>')
 def get_product(product_id):
     try:
-        res = current_app.config['db'].get_item(
-            Key={
-                'id': product_id
-            }
-        )
-    except ClientError as e:
-        return jsonify({"code": 500, "status": e.response['Error']['Message']}), 500
+        p = productdata[product_id]
+    except:
+        return jsonify({"code": 500, "status": "Error getting product"}), 500
     else:
-        if "Item" in res:
-            # , 200, 'application/json'
-            return json.dumps(res["Item"], cls=DecimalEncoder)
-        else:
-            return jsonify({"code": 404, "status": "Failed to fetch product"}), 404
-
+        # , 200, 'application/json'
+        return json.dumps(p)
 
 @api.route('/products')
 def get_products():
     """Single object resource"""
-    data = {}
+    p = {}
 
-    try:
-        res = current_app.config['db'].scan()
-
-        if res['ResponseMetadata']['HTTPStatusCode'] != 200:
-            return jsonify({"code": 500, "status": res['ResponseMetadata']}), 500
-
-        if "Items" in res:
-            data = res['Items']
-
-        while 'LastEvaluatedKey' in res:
-            res = g.db.scan(
-                ExclusiveStartKey=response['LastEvaluatedKey'])
-
-            if "Items" in res:
-                data.extend(res['Items'])
-
-        return json.dumps(data, cls=DecimalEncoder)  # , 200 'application/json'
-
-    except ClientError as e:
-        return jsonify({"code": 500, "status": e.message}), 500
+    return json.dumps(productdata) #, 200 'application/json'
 
 
 @api.route("/healthz")

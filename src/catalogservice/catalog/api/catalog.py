@@ -1,5 +1,5 @@
-[
-    {
+productdata = {
+    "3377807835348": {
         "id": "3377807835348",
         "name": "Seiko Solar",
         "description": "This is a watch.",
@@ -11,7 +11,7 @@
             "price": 219.00
         }
     },
-    {
+    "0983976883313": {
         "id": "0983976883313",
         "name": "Emporio Armani",
         "description": "This is a watch",
@@ -23,7 +23,7 @@
             "price": 499.00
         }
     },
-    {
+    "5147991444866": {
         "id": "5147991444866",
         "name": "Daniel Wellington",
         "description": "This is a watch.",
@@ -35,7 +35,7 @@
             "price": 189.00
         }
     },
-    {
+    "6392888360364": {
         "id": "6392888360364",
         "name": "Maurice de Mauriac",
         "description": "This is a watch.",
@@ -47,7 +47,7 @@
             "price": 2599.00
         }
     },
-    {
+    "1051094507639": {
         "id": "1051094507639",
         "name": "Rolex Deepsea",
         "description": "Rolex diver watch",
@@ -59,7 +59,7 @@
             "price": 12350.00
         }
     },
-    {
+    "6464865908071": {
         "id": "6464865908071",
         "name": "Tissot",
         "description": "This is a watch",
@@ -71,7 +71,7 @@
             "price": 499.00
         }
     },
-    {
+    "3103748076140": {
         "id": "3103748076140",
         "name": "Nixon Gold",
         "description": "Gold watch",
@@ -83,7 +83,7 @@
             "price": 199.00
         }
     },
-    {
+    "4618701513994": {
         "id": "4618701513994",
         "name": "IWC Schaffhausen",
         "description": "IWC watch with leather strap",
@@ -95,7 +95,7 @@
             "price": 7889.00
         }
     },
-    {
+    "3480077496703": {
         "id": "3480077496703",
         "name": "Timex",
         "description": "Timex watch with leather strap.",
@@ -107,4 +107,4 @@
             "price": 159.00
         }
     }
-]
+}

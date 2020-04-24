@@ -13,6 +13,7 @@ Use the following command to create your **EKS** cluster **without** adding ssh 
 eksctl create cluster \
 --name dev303-workshop \
 --region us-west-2 \
+--managed \
 --nodes=4
 ```
 
@@ -22,7 +23,8 @@ eksctl create cluster \
 eksctl create cluster \
 --name dev303-workshop \
 --region us-west-2 \
---nodes=4
+--managed \
+--nodes=4 \
 --ssh-access --ssh-public-key=myid_rsa_ssh_key.pub
 ```
 
@@ -51,34 +53,6 @@ ip-192-168-74-223.us-west-2.compute.internal   Ready     <none>    2m        v1.
 ## Deploy "AnyCompany Shop" microservices application
 
 Follow the steps described next to prepare your environment for the application deployment.
-
-### Create AWS resources
-
-Use the CloudFormation template to create a new Stack in the CloudFormation console. Or use the CLI command below to create the stack.
-
-[![Deploy](images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=dev303-workshop&templateURL=https://s3.amazonaws.com/aws-tracing-workshop-artifacts/cloudformation.yaml) Direct Deployment (us-west-2)
-
-*OR*
-
-```bash
-aws cloudformation create-stack \
---stack-name dev303-workshop \
---template-url https://s3.amazonaws.com/aws-tracing-workshop-artifacts/cloudformation.yaml --capabilities CAPABILITY_NAMED_IAM --region us-west-2
-```
-
-##### *UI Walkthrough*
-
-Click the link or use the AWS CloudFormation console and click **Create Stack**. Upload the template from the Github repository and click **Next**.
-
-![cfn-upload](images/cfn-s3-stackcreate.png)
-
-Provide a **Stack Name** and click **Next**
-
-![cfn-stackname](images/cfn-stackname.png)
-
-Click **Next** on the *following* screen, leaving everything unchanged until you reach the Summary. Make sure to tick the Box to enable IAM permission creation and then click **Create Stack**.
-
-![cfn-create](images/cfn-create.png)
 
 ### Deploy application prerequisites
 
@@ -147,7 +121,7 @@ orderservice-7dc7bcbc66-fkfr2              1/1     Running   0          1d
 orderservice-7dc7bcbc66-fzgr4              1/1     Running   0          1d
 recommenderservice-8bbb5fb66-2425f         1/1     Running   0          1d
 recommenderservice-8bbb5fb66-8bcsr         1/1     Running   0          1d
-redis-microservices-aws-58b5b5d5d4-94fpf   1/1     Running   0          1d
+redis-58b5b5d5d4-94fpf                     1/1     Running   0          1d
 ```
 
 For each microservice, 2 replicas are running. An instance of Redis is online for session and cart storage. The *loadgen* Pod is generating traffic to simplify the next two labs.

@@ -19,9 +19,8 @@
 #description     This script will setup the Cloud9 IDE with the prerequisite packages and code for the workshop.
 #author          @chrkas
 #contributors    @buzzsurfr @dalbhanj @cloudymind
-#date            2018-11-20
-#version         0.1
-#usage           curl -sSL https://s3.amazonaws.com/aws-tracing-workshop-artifacts/install-tools.sh | bash -s stable
+#date            2020-04-15
+#version         0.2
 #==============================================================================
 
 # Install jq
@@ -34,12 +33,12 @@ pip install --user --upgrade awscli
 sudo yum install bash-completion -y -q
 
 # Install kubectl
-curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/kubectl
+curl -o kubectl curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 chmod +x kubectl && sudo mv kubectl /usr/local/bin/
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 
 # Install Heptio Authenticator
-curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
+curl -o aws-iam-authenticator curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
 chmod +x ./aws-iam-authenticator && sudo mv aws-iam-authenticator /usr/local/bin/
 
 # Configure AWS CLI

@@ -10,84 +10,7 @@
 aws --version
 ```
 
-1. Update to the latest version:
-
-```
-pip install --user --upgrade awscli
-```
-
-1. Confirm you have a newer version:
-
-```
-aws --version
-```
-
-## Fetch source code
-
-Clone the Github repository
-
-```
-git clone https://github.com/aws-samples/reinvent2018-dev303-code
-```
-
-## Install Kubernetes tooling
-
-Amazon EKS clusters require kubectl and kubelet binaries and the aws-iam-authenticator
-binary to allow IAM authentication for your Kubernetes cluster.
-
-### Create the default ~/.kube directory for kubectl configuration
-```
-mkdir -p ~/.kube
-```
-
-### Install kubectl
-**Mac**
-```
-curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/kubectl"
-chmod +x /usr/local/bin/kubectl
-```
->Mac users may install kubectl using homebrew using the command `brew install kubernetes-cli`.
-
-**Windows**
-```
-curl -o kubectl.exe https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/windows/amd64/kubectl.exe
-```
-Copy the binary to a folder in your PATH. If you have an existing directory in your PATH that you use for command-line utilities, copy the binary to that directory.
-
-**Linux**
-```
-curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/kubectl"
-chmod +x /usr/local/bin/kubectl
-```
-
-### Install AWS IAM Authenticator
-Download the AWS IAM Authenticator binary for your operating system
-Linux: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
-
-```
-# For Linux
-sudo curl --silent --location -o /usr/local/bin/aws-iam-authenticator "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator"
-sudo chmod +x /usr/local/bin/aws-iam-authenticator
-```
-
-MacOS: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator
-
-```
-# For OSX
-curl --silent --location -o /usr/local/bin/aws-iam-authenticator "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator"
-chmod +x /usr/local/bin/aws-iam-authenticator
-```
-
-Windows: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/windows/amd64/aws-iam-authenticator.exe
-
-
-### Verify installation
-To verify that both tools are installed successfully run the commands
-
-```
-$ kubectl version --short --client
-$ aws-iam-authenticator help
-```
+2. Update to the latest version:
 
 ## Install eksctl
 Install eksctl per instructions from [eksctl.io](https://eksctl.io)
@@ -100,13 +23,29 @@ sudo mv /tmp/eksctl /usr/local/bin
 Mac users can also use Homebrew to install eksctl
 `brew install weaveworks/tap/eksctl`
 
-Windows users can download the binary from here https://github.com/weaveworks/eksctl/releases/download/0.1.11/eksctl_Windows_amd64.zip
+Windows users can download the binary from here https://github.com/weaveworks/eksctl/releases/
+
+## Fetch source code
+
+Clone the Github repository
+
+```
+git clone https://github.com/aws-samples/reinvent2018-dev303-code
+```
+
+## Install Kubernetes tooling
+
+Amazon EKS clusters require kubectl and the aws-iam-authenticator
+binary to allow IAM authentication for your Kubernetes cluster.
+
+Follow the instructions [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install kubectl on your machine.
 
 ### Verify installation
+To verify that both tools are installed successfully run the commands
 
-Confirm your eksctl version is at least `0.1.11` with the command
-```bash
-eksctl version
+```
+$ eksctl version
+$ kubectl version --short --client
 ```
 
 ### Install `helm`
@@ -146,8 +85,6 @@ Check if Docker is installed successfully with
 ```bash
 docker --version
 ```
-
-
 
 # Next Step
 

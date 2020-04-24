@@ -57,7 +57,9 @@ aws configure get default.region
 The necessary tooling can be installed using a script. Run:
 
 ```bash
-curl -sSL https://s3.amazonaws.com/aws-tracing-workshop-artifacts/install-tools.sh | bash -s stable
+git clone https://github.com/aws-samples/reinvent2018-dev303-code
+cd reinvent2018-dev303-code
+bash ./scripts/install-tools.sh
 ```
 
 This will install all required tools and download the Github repository.
@@ -65,107 +67,3 @@ This will install all required tools and download the Github repository.
 # Next Step
 
 Back to [Prerequisites](prerequisites.md)
-
-
-
-
-
-# *Optional! - Manual Installation in Cloud9*
-
-As reference information, the necessary steps to install all required tools into the Cloud9 environment are listed below.
-
-## *AWS CLI*
-
-> For this workshop, please ignore warnings about the version of pip being used.
-
-Run the following command to view the current version of aws-cli:
-
-```
-aws --version
-```
-
-Update to the latest version:
-
-```
-pip install --user --upgrade awscli
-```
-
-Confirm you have a newer version:
-
-```
-aws --version
-```
-
-## *Fetch sourcecode*
-
-Clone the Github repository
-
-```
-cd ~/environment
-git clone https://github.com/aws-samples/reinvent2018-dev303-code
-```
-
-## *Install Kubernetes tooling*
-
-> Cloud9 is backed by a Linux instance, therefore we will give you the commands to download the Linux binaries. If you are running Mac OSX / Windows, please [see the official EKS docs for the download links.](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
-
-Amazon EKS clusters require kubectl and kubelet binaries and the aws-iam-authenticator
-binary to allow IAM authentication for your Kubernetes cluster.
-
-### *Create the default ~/.kube directory for kubectl configuration*
-```
-mkdir -p ~/.kube
-```
-
-### *Install kubectl*
-```
-sudo curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/kubectl"
-sudo chmod +x /usr/local/bin/kubectl
-```
-
-### *Install AWS IAM Authenticator*
-```
-go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator
-sudo mv ~/go/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
-```
-
-### *Verify installation*
-To verify that both tools are installed successfully run the commands
-
-```
-kubectl version --short --client
-aws-iam-authenticator help
-```
-
-## *Install eksctl*
-Install eksctl per instructions from [eksctl.io](https://eksctl.io)
-
-```bash
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-sudo mv /tmp/eksctl /usr/local/bin
-```
-
-### *Verify installation*
-
-Confirm your eksctl version is at least `0.1.11` with the command
-```bash
-eksctl version
-```
-
-### *Create SSH Key*
-
-By default **eksctl** uses the **~/.ssh/id_rsa** SSH key. If this does not exist on your machine you can create it with 
-
-```bash
-ssh-keygen
-```
-
-Press enter 3 times to generate the key. This key is necessary if you want to log in to the EKS worker nodes.
-
-## *Install Docker*
-
-For the Cloud9 environment, Docker is already pre-installed.
-
-```
-docker --version
-```

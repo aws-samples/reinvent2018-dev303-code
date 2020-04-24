@@ -14,12 +14,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogservice
   namespace: microservices-aws
 spec:
+  selector:
+    matchLabels:
+      app: catalogservice
   replicas: 2
   template:
     metadata:
@@ -27,32 +30,9 @@ spec:
         app: catalogservice
         product: storefront
     spec:
-      initContainers:
-        - name: data-load
-          image: ckassen/catalogservice:latest
-          command: ["flask", "import-data"]
-          envFrom: 
-            - 
-              configMapRef: 
-                name: services-environment-config
-          env:
-            - name: FLASK_APP
-              value: "catalog.wsgi:app"
-            - name: SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: microservices-aws
-                  key: catalogservice
-          resources:
-            requests:
-              cpu: 100m
-              memory: 64Mi
-            limits:
-              cpu: 100m
-              memory: 128Mi
       containers:
         - name: catalogservice
-          image: ckassen/catalogservice:xray
+          image: ckassen/catalogservice:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

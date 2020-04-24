@@ -8,64 +8,15 @@ In this lab, you will be using CloudWatch Logs to monitor the logs of your conta
 Please follow the instructions in the CloudWatch Container Insights documentation at https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-EKS.html
 to set up the necessary permissions for your worker nodes, set up CWAgent daemonset and add Fluentd daemonset to your EKS cluster.
 
-Afterwards head to the Amazon CloudWatch console [CloudWatch Container Insights console](https://eu-central-1.console.aws.amazon.com/cloudwatch/home?region=eu-central-1#cw:dashboard=Container;context=~(clusters~(~)~dimensions~(~)~performanceType~'ClusterName)) and view metrics for your cluster. You can switch to CloudWatch Logs Insights to view the logs for each individual Pod directly from this dashboard.
+Afterwards head to the Amazon CloudWatch console [CloudWatch Container Insights console](https://console.aws.amazon.com/cloudwatch/home#cw:dashboard=Container;context=~(clusters~(~)~dimensions~(~)~performanceType~'ClusterName)) and view metrics for your cluster. You can switch to CloudWatch Logs Insights to view the logs for each individual Pod directly from this dashboard.
 
 ***
 ## Previous Instructions
 
-Recommended approach is to use Amazon CloudWatch Container Insights. If you still like to run Prometheus, Grafana and Fluentd on your Amazon EKS cluster then follow the instructions below.
+Recommended approach is to use Amazon CloudWatch Container Insights. If you still like to run Prometheus, Grafana see instructions below.
 
-## Collecting logs using `Fluentd`
-Deploy Fluentd as a Daemonset to collect logs and send them to CloudWatch Logs. To do this the following Docker image https://hub.docker.com/r/fluent/fluentd-kubernetes-daemonset/ is used to host Fluentd as a DaemonSet on your Amazon EKS cluster.
-
-The `Fluentd-Policy` IAM policy enables the Fluentd daemon to upload logs to CloudWatch Logs. The policy has been created using the CloudFormation template already. Now all you need to do is to attach it to the worker nodes.
-
-Find the EKS worker nodes node group **IAM role arn**
-```bash
-# Get the nodegroup (assuming there is only 1 nodegroup at this point)
-NODEGROUP=$(eksctl get nodegroups --cluster=dev303-workshop | awk '{print $2}' | tail -n1)
-
-# Get EKS worker node IAM instance role ARN
-PROFILE=$(aws ec2 describe-instances --filters Name=tag:Name,Values=dev303-workshop-$NODEGROUP-Node --query 'Reservations[0].Instances[0].IamInstanceProfile.Arn' --output text | cut -d '/' -f 2)
-
-# Fetch IAM instance role name
-ROLE=$(aws iam get-instance-profile --instance-profile-name $PROFILE --query "InstanceProfile.Roles[0].RoleName" --output text)
-
-echo $ROLE # Print role name
-
-# Attach IAM policy for Fluentd
-ARN=$(aws iam list-policies --scope Local --query "Policies[?PolicyName=='Fluentd-Policy'].Arn" --output text)
-
-aws iam attach-role-policy --role-name $ROLE --policy-arn $ARN
-```
-
-> **Note**
->
-> If you are not deploying to the *us-west-2* region you need to update the AWS_REGION variable in the following file `fluentd-cloudwatch-configmap.yaml` to point to the region used.
-
-Apply the Fluentd configuration to your EKS cluster
-```
-kubectl create -f deploy/monitoring/fluentd-cloudwatch-configmap.yaml
-```
-
-Next, create Fluentd daemonset
-```
-kubectl create -f deploy/monitoring/fluentd-cloudwatch-daemonset.yaml
-```
-
-Fluentd will be deployed to the kube-system namespace. To check if everything is up and running run 
-```
-kubectl get pods -l app=fluentd-cloudwatch -n kube-system
-```
-
-If everything is correctly deployed the following log files will be sent to CloudWatch automatically:
-
-**Container Logs** (/var/log/containers/):
-Each container log is being tracked in a separate Log Stream based on the following naming conventions
-
-*eks-cluster.<container_name>*
-
-Log in to the **AWS Console** and switch to [**CloudWatch**](https://console.aws.amazon.com/cloudwatch/home#logs:) and check if a **Log Group** with the name **eks-cluster** has been created.
+## Collecting logs using `FluentBit`
+Deploy Fluentd as a Daemonset to collect logs and send them to CloudWatch Logs. Full instructions are documented here [Centralized container logging with FluentBit](https://aws.amazon.com/blogs/opensource/centralized-container-logging-fluent-bit/) for EKS and ECS.
 
 ## Health and Performance Monitoring
 
