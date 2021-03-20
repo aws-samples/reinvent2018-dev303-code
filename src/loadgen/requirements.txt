@@ -9,7 +9,7 @@ geventhttpclient-wheels==1.3.1.dev2
 greenlet==0.4.15
 idna==2.9
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 locustio==0.14.5
 MarkupSafe==1.1.1
 msgpack==1.0.0
