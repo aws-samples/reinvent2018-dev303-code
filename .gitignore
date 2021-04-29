@@ -2,4 +2,5 @@
 *.rdb
 credentials.yaml
 .vscode
+.venv
 node_modules
