@@ -27,7 +27,7 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.6.0",
     "minimist": ">=1.2.2",
     "nodemon": "^2.0.7"
   }
