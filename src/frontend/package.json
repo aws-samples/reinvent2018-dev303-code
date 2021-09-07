@@ -11,14 +11,14 @@
     "start": "nodemon -r dotenv/config ./bin/www"
   },
   "dependencies": {
-    "aws-sdk": "^2.895.0",
+    "aws-sdk": "^2.983.0",
     "aws-xray-sdk": "^3.3.1",
     "aws-xray-sdk-express": "^3.3.1",
-    "axios": "~0.21.1",
+    "axios": "^0.21.4",
     "body-parser": "~1.18.3",
     "connect-redis": "^5.2.0",
     "cookie-parser": "~1.4.3",
-    "debug": "~4.3.0",
+    "debug": "^4.3.2",
     "env-var": "^7.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -29,6 +29,6 @@
   "devDependencies": {
     "dotenv": "^8.6.0",
     "minimist": ">=1.2.2",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.12"
   }
 }
